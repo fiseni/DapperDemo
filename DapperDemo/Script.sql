@@ -27,3 +27,4 @@ CREATE PROCEDURE GetMultipleTables
 AS
 SELECT * FROM Customer
 SELECT Id, Name, Age FROM Customer
+Select Count(*) from Customer

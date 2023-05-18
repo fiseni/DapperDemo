@@ -16,6 +16,7 @@ public class Sample7
 
         var customers1 = await multi.ReadAsync<Customer1>();
         var customers2 = await multi.ReadAsync<Customer2>();
+        var count = await multi.ReadFirstAsync<int>();
 
         customers1.AsList().ForEach(x => Console.WriteLine(x));
         customers2.AsList().ForEach(x => Console.WriteLine(x));
