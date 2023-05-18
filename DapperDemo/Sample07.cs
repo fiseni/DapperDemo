@@ -4,7 +4,7 @@ using System.Data;
 
 namespace DapperDemo;
 
-public class Sample7
+public class Sample07
 {
     public static async Task RunAsync(string connectionString)
     {
@@ -17,6 +17,7 @@ public class Sample7
         var customers1 = await multi.ReadAsync<Customer1>();
         var customers2 = await multi.ReadAsync<Customer2>();
         var count = await multi.ReadFirstAsync<int>();
+        var ages = await multi.ReadAsync<int>();
 
         customers1.AsList().ForEach(x => Console.WriteLine(x));
         customers2.AsList().ForEach(x => Console.WriteLine(x));

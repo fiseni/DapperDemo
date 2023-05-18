@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DapperDemo;
 
-public class Sample8
+public class Sample09
 {
     public static async Task RunAsync(string connectionString)
     {

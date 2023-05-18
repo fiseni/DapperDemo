@@ -19,12 +19,27 @@ GO
 
 CREATE PROCEDURE GetAllCustomers @Name nvarchar(50)
 AS
+BEGIN
 SELECT * FROM Customer WHERE Name = @Name
+END
 
 GO
 
 CREATE PROCEDURE GetMultipleTables
 AS
+BEGIN
 SELECT * FROM Customer
 SELECT Id, Name, Age FROM Customer
 Select Count(*) from Customer
+select Age from Customer
+END
+
+GO
+
+CREATE PROCEDURE InsertCustomer
+@Name nvarchar(50),
+@Age int
+AS
+BEGIN
+INSERT INTO Customer (Name, Age) VALUES (@Name, @Age)
+END

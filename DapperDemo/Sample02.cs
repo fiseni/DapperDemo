@@ -1,24 +1,20 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace DapperDemo;
 
-public class Sample4
+public class Sample02
 {
     public static async Task RunAsync(string connectionString)
     {
         using var connection = new SqlConnection(connectionString);
 
-        var sql = "Insert into Customer (Name) Values (@Name)";
+        var sp = "GetAllCustomers";
 
-        var customer = new Customer
-        {
-            Name = "Name4"
-        };
+        var customers = await connection.QueryAsync<Customer>(sp, new { Name = "Name1" }, commandType: CommandType.StoredProcedure);
 
-        var rows = await connection.ExecuteAsync(sql, customer);
-
-        Console.WriteLine($"Affected ros: {rows}");
+        customers.AsList().ForEach(x => Console.WriteLine(x));
     }
 
     public record Customer

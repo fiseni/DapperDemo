@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 
 namespace DapperDemo;
 
-public class Sample3
+public class Sample03
 {
     public static async Task RunAsync(string connectionString)
     {
