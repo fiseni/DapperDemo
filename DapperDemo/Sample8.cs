@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using System.Data;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DapperDemo;
 
@@ -8,33 +8,54 @@ public class Sample8
 {
     public static async Task RunAsync(string connectionString)
     {
+        // Call it only once
+        Mapper.MapManual();
+
         using var connection = new SqlConnection(connectionString);
 
-        var sp = "GetMultipleTables";
+        var sql = "Select * from Customer";
 
-        using var multi = await connection.QueryMultipleAsync(sp, commandType: CommandType.StoredProcedure);
+        var customers = await connection.QueryAsync<Customer>(sql);
 
-        var customers1 = await multi.ReadAsync<Customer1>();
-        var customers2 = await multi.ReadAsync<Customer2>();
-
-        customers1.AsList().ForEach(x => Console.WriteLine(x));
-        customers2.AsList().ForEach(x => Console.WriteLine(x));
+        customers.AsList().ForEach(x => Console.WriteLine(x));
     }
 
-    public record Customer1
+    public record Customer
     {
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public int? Age { get; set; }
-        public decimal? Price { get; set; }
-        public double? Perimeter { get; set; }
-        public float? Area { get; set; }
-        public bool? IsSmoking { get; set; }
+        [Column("Id")]
+        public int Id_X { get; set; }
+
+        [Column("Name")]
+        public string? Name_X { get; set; }
+
+        [Column("Age")]
+        public int? Age_X { get; set; }
+
+        public decimal Price { get; set; }
     }
 
-    public record Customer2
+    public class Mapper
     {
-        public int Id { get; set; }
-        public string? Name { get; set; }
+        public static void MapWithAttributes()
+        {
+            SqlMapper.SetTypeMap(typeof(Customer), new CustomPropertyTypeMap(typeof(Customer), (type, columnName)
+                => type.GetProperties().FirstOrDefault(prop =>
+                    prop.GetCustomAttributes(false)
+                        .OfType<ColumnAttribute>()
+                        .Any(attr => attr.Name == columnName))));
+        }
+
+        public static void MapManual()
+        {
+            var customerMap = new CustomPropertyTypeMap(typeof(Customer), (type, columnName) => columnName switch
+            {
+                "Id" => type.GetProperty(nameof(Customer.Id_X)),
+                "Name" => type.GetProperty(nameof(Customer.Name_X)),
+                "Age" => type.GetProperty(nameof(Customer.Age_X)),
+                _ => type.GetProperty(columnName)
+            });
+
+            SqlMapper.SetTypeMap(typeof(Customer), customerMap);
+        }
     }
 }

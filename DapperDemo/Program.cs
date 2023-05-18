@@ -8,7 +8,8 @@ var connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Dapp
 //await Sample4.RunAsync(connectionString);
 //await Sample5.RunAsync(connectionString);
 //await Sample6.RunAsync(connectionString);
-await Sample7.RunAsync(connectionString);
+//await Sample7.RunAsync(connectionString);
 //await Sample8.RunAsync(connectionString);
+//await Sample9.RunAsync(connectionString);
 
 Console.WriteLine();
